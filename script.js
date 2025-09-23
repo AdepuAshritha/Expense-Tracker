@@ -1,4 +1,3 @@
-// Select elements
 const form = document.getElementById('expense-form');
 const desc = document.getElementById('desc');
 const amount = document.getElementById('amount');
@@ -12,9 +11,7 @@ const searchTextInput = document.getElementById('search-text');
 const STORAGE_KEY = 'my_expenses_v1';
 let expenses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-let expenseChart; // Chart.js instance
-
-// Render expenses list
+let expenseChart; 
 function renderExpenses() {
   listEl.innerHTML = '';
   let total = 0;
@@ -23,7 +20,6 @@ function renderExpenses() {
   const searchText = searchTextInput.value.toLowerCase();
 
   expenses.forEach((exp, index) => {
-    // Apply filters
     if (selectedCategory !== 'All' && exp.category !== selectedCategory) return;
     if (!exp.desc.toLowerCase().includes(searchText)) return;
 
@@ -39,7 +35,6 @@ function renderExpenses() {
       </div>
     `;
 
-    // Category colors
     let color = '';
     switch(exp.category) {
       case 'Food': color = '#d4edda'; break;
@@ -58,10 +53,9 @@ function renderExpenses() {
   totalEl.textContent = `Total: ₹${total.toFixed(2)}`;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
 
-  updateChart(); // Update chart each time
+  updateChart();
 }
 
-// Add new expense
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -77,17 +71,14 @@ form.addEventListener('submit', (event) => {
   form.reset();
 });
 
-// Delete expense
 function deleteExpense(index) {
   expenses.splice(index, 1);
   renderExpenses();
 }
 
-// Filters
 filterCategory.addEventListener('change', renderExpenses);
 searchTextInput.addEventListener('input', renderExpenses);
 
-// Chart.js
 function updateChart() {
   const categories = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
   const counts = categories.map(cat =>
@@ -113,5 +104,5 @@ function updateChart() {
   });
 }
 
-// Initial render
 renderExpenses();
+
