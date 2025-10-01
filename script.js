@@ -11,12 +11,13 @@ const searchTextInput = document.getElementById('search-text');
 const STORAGE_KEY = 'my_expenses_v1';
 let expenses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
-let expenseChart;
-let editingIndex = -1;
+let expenseChart; 
+let editingIndex = -1;  
 
 function renderExpenses() {
   listEl.innerHTML = '';
   let total = 0;
+
   const selectedCategory = filterCategory.value;
   const searchText = searchTextInput.value.toLowerCase();
 
@@ -53,6 +54,7 @@ function renderExpenses() {
 
   totalEl.textContent = `Total: ₹${total.toFixed(2)}`;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+
   updateChart();
 }
 
@@ -62,13 +64,16 @@ function startEdit(index) {
   amount.value = exp.amount;
   dateInput.value = exp.date;
   category.value = exp.category;
-  editingIndex = index;
+
+  editingIndex = index; 
+
   const submitBtn = form.querySelector('button[type="submit"]');
   if (submitBtn) submitBtn.textContent = "Update Expense";
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+
   const newExpense = {
     desc: desc.value,
     amount: parseFloat(amount.value),
@@ -79,9 +84,11 @@ form.addEventListener('submit', (event) => {
   if (editingIndex >= 0) {
     expenses[editingIndex] = newExpense;
     editingIndex = -1;
+
     const submitBtn = form.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.textContent = "Add Expense";
   } else {
+   
     expenses.push(newExpense);
   }
 
@@ -103,8 +110,11 @@ function updateChart() {
     expenses.filter(exp => exp.category === cat)
             .reduce((sum, e) => sum + e.amount, 0)
   );
+
   const ctx = document.getElementById('expense-chart').getContext('2d');
+
   if (expenseChart) expenseChart.destroy();
+
   expenseChart = new Chart(ctx, {
     type: 'pie',
     data: {
